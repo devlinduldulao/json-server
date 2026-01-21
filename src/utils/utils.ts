@@ -26,22 +26,40 @@ export function fileExists(filePath: string): boolean {
  * @throws Error if the file exists but isn't valid JSON
  */
 export function loadJsonFile(filePath: string): Record<string, any> {
-  try {
-    if (!fileExists(filePath)) {
-      throw new Error(`File not found: ${filePath}`);
-    }
+  if (!filePath || typeof filePath !== 'string') {
+    throw new Error('Invalid file path provided');
+  }
 
+  if (!fileExists(filePath)) {
+    throw new Error(`File not found: ${filePath}`);
+  }
+
+  try {
     const data = fs.readFileSync(filePath, 'utf8');
 
+    if (!data || data.trim() === '') {
+      console.warn(`Warning: Empty JSON file: ${filePath}`);
+      return {};
+    }
+
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      
+      if (typeof parsed !== 'object' || parsed === null) {
+        throw new Error('JSON content must be an object');
+      }
+
+      return parsed;
     } catch (parseError) {
       const errorMessage = parseError instanceof Error ? parseError.message : String(parseError);
       throw new Error(`Invalid JSON in file ${filePath}: ${errorMessage}`);
     }
   } catch (error) {
+    if (error instanceof Error && error.message.includes('Invalid JSON')) {
+      throw error;
+    }
     console.error(`Error loading JSON file: ${filePath}`, error);
-    return {};
+    throw error;
   }
 }
 
@@ -136,6 +154,7 @@ export function getResourceById(
  * @param data - Resource data
  * @param idField - Field name to use as ID (default: 'id')
  * @returns The created resource with generated ID
+ * @throws Error if invalid parameters are provided
  */
 export function createResource(
   db: Database,
@@ -143,6 +162,18 @@ export function createResource(
   data: Record<string, any>,
   idField: string = 'id'
 ): Record<string, any> {
+  if (!db || typeof db !== 'object') {
+    throw new Error('Invalid database object');
+  }
+
+  if (!name || typeof name !== 'string' || name.trim() === '') {
+    throw new Error('Invalid collection name');
+  }
+
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error('Invalid resource data: must be an object');
+  }
+
   // Create collection if it doesn't exist
   if (!db[name]) {
     db[name] = [];
@@ -168,6 +199,7 @@ export function createResource(
  * @param data - Updated data (will be merged with existing resource)
  * @param idField - Field name to use as ID (default: 'id')
  * @returns Updated resource or undefined if resource not found
+ * @throws Error if invalid parameters are provided
  */
 export function updateResource(
   db: Database,
@@ -176,6 +208,22 @@ export function updateResource(
   data: Record<string, any>,
   idField: string = 'id'
 ): Record<string, any> | undefined {
+  if (!db || typeof db !== 'object') {
+    throw new Error('Invalid database object');
+  }
+
+  if (!name || typeof name !== 'string') {
+    throw new Error('Invalid collection name');
+  }
+
+  if (id === undefined || id === null) {
+    throw new Error('Invalid resource ID');
+  }
+
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error('Invalid update data: must be an object');
+  }
+
   const resources = getResources(db, name);
   const index = resources.findIndex((item) => String(item[idField]) === String(id));
 
@@ -199,6 +247,7 @@ export function updateResource(
  * @param id - Resource ID to delete
  * @param idField - Field name to use as ID (default: 'id')
  * @returns boolean indicating success of the operation
+ * @throws Error if invalid parameters are provided
  */
 export function deleteResource(
   db: Database,
@@ -206,6 +255,18 @@ export function deleteResource(
   id: string,
   idField: string = 'id'
 ): boolean {
+  if (!db || typeof db !== 'object') {
+    throw new Error('Invalid database object');
+  }
+
+  if (!name || typeof name !== 'string') {
+    throw new Error('Invalid collection name');
+  }
+
+  if (id === undefined || id === null) {
+    throw new Error('Invalid resource ID');
+  }
+
   const resources = getResources(db, name);
   const index = resources.findIndex((item) => String(item[idField]) === String(id));
 

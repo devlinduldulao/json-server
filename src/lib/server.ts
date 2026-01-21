@@ -192,6 +192,11 @@ export class JsonServer {
     page: number,
     perPage: number
   ): Record<string, any> {
+    // Validate and sanitize inputs
+    total = Math.max(0, Math.floor(Number(total)) || 0);
+    page = Math.max(1, Math.floor(Number(page)) || 1);
+    perPage = Math.max(1, Math.min(1000, Math.floor(Number(perPage)) || 10)); // Cap at 1000
+
     const totalPages = Math.ceil(total / perPage);
 
     return {
@@ -217,12 +222,21 @@ export class JsonServer {
     page: number = 1,
     perPage: number = 10
   ): Record<string, any> {
+    // Validate and sanitize inputs
+    if (!Array.isArray(collection)) {
+      throw new Error('Collection must be an array');
+    }
+
     // Ensure valid page and perPage values
-    page = Math.max(1, parseInt(String(page)) || 1);
-    perPage = Math.max(1, parseInt(String(perPage)) || 10);
+    page = Math.max(1, Math.floor(Number(page)) || 1);
+    perPage = Math.max(1, Math.min(1000, Math.floor(Number(perPage)) || 10)); // Cap at 1000
 
     const total = collection.length;
     const totalPages = Math.ceil(total / perPage);
+    
+    // Clamp page to valid range
+    page = Math.min(page, Math.max(1, totalPages));
+    
     const start = (page - 1) * perPage;
     const end = Math.min(start + perPage, total);
 
@@ -265,6 +279,11 @@ export class JsonServer {
     page: number = 1,
     pageSize: number = 10
   ): Record<string, any> {
+    // Validate resource name
+    if (!resourceName || typeof resourceName !== 'string') {
+      throw new Error('Invalid resource name');
+    }
+
     if (!this.db[resourceName]) {
       return {
         data: [],
@@ -278,11 +297,16 @@ export class JsonServer {
     }
 
     const collection = this.db[resourceName];
+    
+    if (!Array.isArray(collection)) {
+      throw new Error(`Resource '${resourceName}' is not a collection`);
+    }
+
     const totalItems = collection.length;
 
     // Ensure page and pageSize are valid numbers
-    page = Math.max(1, parseInt(String(page), 10) || 1);
-    pageSize = Math.max(1, parseInt(String(pageSize), 10) || 10);
+    page = Math.max(1, Math.floor(Number(page)) || 1);
+    pageSize = Math.max(1, Math.min(1000, Math.floor(Number(pageSize)) || 10)); // Cap at 1000
 
     const start = (page - 1) * pageSize;
     const end = Math.min(start + pageSize, totalItems);
