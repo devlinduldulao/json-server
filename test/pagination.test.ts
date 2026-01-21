@@ -29,7 +29,6 @@ describe('Pagination Tests', () => {
     const options: ServerOptions = {
       port: 3000,
       host: 'localhost',
-      cors: true,
       static: [],
       middlewares: [],
       bodyParser: true,

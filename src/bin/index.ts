@@ -214,7 +214,6 @@ async function main(): Promise<void> {
     const options: ServerOptions = {
       port: cliArgs.port || DEFAULT_PORT,
       host: cliArgs.host || DEFAULT_HOST,
-      cors: !(cliArgs['no-cors'] || false),
       static: cliArgs.static || [],
       middlewares: [],
       bodyParser: true,

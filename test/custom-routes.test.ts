@@ -36,7 +36,6 @@ describe('Custom Routes Tests', () => {
     const options: ServerOptions = {
       port: 3458,
       host: 'localhost',
-      cors: true,
       static: [],
       middlewares: [],
       bodyParser: true,

@@ -33,7 +33,6 @@ describe('REST API Integration Tests', () => {
     const options: ServerOptions = {
       port: 3456,
       host: 'localhost',
-      cors: true,
       static: [],
       middlewares: [],
       bodyParser: true,

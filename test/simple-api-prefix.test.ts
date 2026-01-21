@@ -12,7 +12,6 @@ describe('Simple API Prefix Test', () => {
     const options: ServerOptions = {
       port: 0,
       host: 'localhost',
-      cors: true,
       static: [],
       middlewares: [],
       bodyParser: true,

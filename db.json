@@ -1,29 +1,113 @@
 {
   "users": [
-    { "id": 1, "name": "John Doe", "email": "john@example.com" },
-    { "id": 2, "name": "Jane Smith", "email": "jane@example.com" },
-    { "id": 3, "name": "Bob Johnson", "email": "bob@example.com" }
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob@example.com"
+    }
   ],
   "posts": [
-    { "id": 1, "title": "First Post", "userId": 1 },
-    { "id": 2, "title": "Second Post", "userId": 1 },
-    { "id": 3, "title": "Third Post", "userId": 2 }
+    {
+      "id": 1,
+      "title": "First Post",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "Second Post",
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "title": "Third Post",
+      "userId": 2
+    }
   ],
   "items": [
-    { "id": 1, "name": "Item 1", "value": 100 },
-    { "id": 2, "name": "Item 2", "value": 200 },
-    { "id": 3, "name": "Item 3", "value": 300 },
-    { "id": 4, "name": "Item 4", "value": 400 },
-    { "id": 5, "name": "Item 5", "value": 500 },
-    { "id": 6, "name": "Item 6", "value": 600 },
-    { "id": 7, "name": "Item 7", "value": 700 },
-    { "id": 8, "name": "Item 8", "value": 800 },
-    { "id": 9, "name": "Item 9", "value": 900 },
-    { "id": 10, "name": "Item 10", "value": 1000 },
-    { "id": 11, "name": "Item 11", "value": 1100 },
-    { "id": 12, "name": "Item 12", "value": 1200 },
-    { "id": 13, "name": "Item 13", "value": 1300 },
-    { "id": 14, "name": "Item 14", "value": 1400 },
-    { "id": 15, "name": "Item 15", "value": 1500 }
+    {
+      "id": 1,
+      "name": "Item 1",
+      "value": 100
+    },
+    {
+      "id": 2,
+      "name": "Item 2",
+      "value": 200
+    },
+    {
+      "id": 3,
+      "name": "Item 3",
+      "value": 300
+    },
+    {
+      "id": 4,
+      "name": "Item 4",
+      "value": 400
+    },
+    {
+      "id": 5,
+      "name": "Item 5",
+      "value": 500
+    },
+    {
+      "id": 6,
+      "name": "Item 6",
+      "value": 600
+    },
+    {
+      "id": 7,
+      "name": "Item 7",
+      "value": 700
+    },
+    {
+      "id": 8,
+      "name": "Item 8",
+      "value": 800
+    },
+    {
+      "id": 9,
+      "name": "Item 9",
+      "value": 900
+    },
+    {
+      "id": 10,
+      "name": "Item 10",
+      "value": 1000
+    },
+    {
+      "id": 11,
+      "name": "Item 11",
+      "value": 1100
+    },
+    {
+      "id": 12,
+      "name": "Item 12",
+      "value": 1200
+    },
+    {
+      "id": 13,
+      "name": "Item 13",
+      "value": 1300
+    },
+    {
+      "id": 14,
+      "name": "Item 14",
+      "value": 1400
+    },
+    {
+      "id": 15,
+      "name": "Item 15",
+      "value": 1500
+    }
   ]
 }

@@ -22,7 +22,6 @@ describe('Read-Only Mode Tests', () => {
     const options: ServerOptions = {
       port: 3457,
       host: 'localhost',
-      cors: true,
       static: [],
       middlewares: [],
       bodyParser: true,

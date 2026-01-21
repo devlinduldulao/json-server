@@ -11,9 +11,6 @@ export interface ServerOptions {
   /** Host address to bind the server to */
   host: string;
 
-  /** Whether to enable CORS */
-  cors: boolean;
-
   /** Path(s) to static files to serve */
   static: string | string[];
 
