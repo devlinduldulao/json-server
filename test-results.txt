@@ -1,0 +1,378 @@
+(node:44628) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/apiPrefix.test.ts
+(node:44624) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/utils.test.ts
+(node:44792) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/cli-styles.test.ts
+(node:40420) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/middleware.test.ts
+(node:16204) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/custom-routes.test.ts
+(node:34672) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/utils-comprehensive.test.ts
+  ΓùÅ Console
+
+    console.warn
+      Warning: Empty JSON file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\empty.json
+
+      39 |
+      40 |     if (!data || data.trim() === '') {
+    > 41 |       console.warn(`Warning: Empty JSON file: ${filePath}`);
+         |               ^
+      42 |       return {};
+      43 |     }
+      44 |
+
+      at Object.loadJsonFile (src/utils/utils.ts:41:15)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:75:28)
+
+    console.warn
+      Warning: Empty JSON file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\whitespace.json
+
+      39 |
+      40 |     if (!data || data.trim() === '') {
+    > 41 |       console.warn(`Warning: Empty JSON file: ${filePath}`);
+         |               ^
+      42 |       return {};
+      43 |     }
+      44 |
+
+      at Object.loadJsonFile (src/utils/utils.ts:41:15)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:82:28)
+
+    console.error
+      Error saving JSON file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test Error: EISDIR: illegal operation on a directory, open 'C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test'
+          at Object.writeFileSync (node:fs:2391:20)
+          at Object.saveJsonFile (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\src\utils\utils.ts:82:8)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\utils-comprehensive.test.ts:164:15
+          at Object.<anonymous> (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\expect\build\index.js:1824:9)
+          at Object.throwingMatcher [as toThrow] (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\expect\build\index.js:2235:93)
+          at Object.<anonymous> (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\utils-comprehensive.test.ts:165:10)
+          at Promise.finally.completed (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\runner.js:95:33)
+          at runTestInternal (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:275:16)
+          at runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:343:7)
+          at Object.worker (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:497:12) {
+        errno: -4068,
+        code: 'EISDIR',
+        syscall: 'open',
+        path: 'C:\\Users\\DEVDUL\\Documents\\DEVELOPMENT\\json-server\\test\\tmp-utils-test'
+      }
+
+      82 |     fs.writeFileSync(filePath, jsonData, 'utf8');
+      83 |   } catch (error) {
+    > 84 |     console.error(`Error saving JSON file: ${filePath}`, error);
+         |             ^
+      85 |     const errorMessage = error instanceof Error ? error.message : String(error);
+      86 |     throw new Error(`Failed to write to ${filePath}: ${errorMessage}`);
+      87 |   }
+
+      at Object.saveJsonFile (src/utils/utils.ts:84:13)
+      at test/utils-comprehensive.test.ts:164:15
+      at Object.<anonymous> (node_modules/expect/build/index.js:1824:9)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:2235:93)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:165:10)
+
+    console.error
+      Routes file not found: /non/existent/routes.json
+
+      287 | export async function parseRoutesFile(routesPath: string): Promise<Record<string, any>> {
+      288 |   if (!fileExists(routesPath)) {
+    > 289 |     console.error(`Routes file not found: ${routesPath}`);
+          |             ^
+      290 |     return {};
+      291 |   }
+      292 |
+
+      at Object.parseRoutesFile (src/utils/utils.ts:289:13)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:414:34)
+
+    console.error
+      Error parsing routes file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\routes.yaml Error: Unsupported routes file format: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\routes.yaml
+          at Object.parseRoutesFile (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\src\utils\utils.ts:306:13)
+          at Object.<anonymous> (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\utils-comprehensive.test.ts:421:34)
+          at Promise.finally.completed (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\runner.js:95:33)
+          at runTestInternal (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:275:16)
+          at runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:343:7)
+          at Object.worker (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:497:12)
+
+      307 |     }
+      308 |   } catch (error) {
+    > 309 |     console.error(`Error parsing routes file: ${routesPath}`, error);
+          |             ^
+      310 |     return {};
+      311 |   }
+      312 | }
+
+      at Object.parseRoutesFile (src/utils/utils.ts:309:13)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:421:34)
+
+    console.error
+      Error parsing routes file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\bad-routes.js Error: Error importing routes file: Unexpected identifier 'javascript'
+          at Object.parseRoutesFile (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\src\utils\utils.ts:303:15)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at Object.<anonymous> (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\utils-comprehensive.test.ts:428:22)
+
+      307 |     }
+      308 |   } catch (error) {
+    > 309 |     console.error(`Error parsing routes file: ${routesPath}`, error);
+          |             ^
+      310 |     return {};
+      311 |   }
+      312 | }
+
+      at Object.parseRoutesFile (src/utils/utils.ts:309:13)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:428:22)
+
+    console.error
+      Error parsing routes file: C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\bad.json Error: Invalid JSON in file C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\tmp-utils-test\bad.json: Expected property name or '}' in JSON at position 2 (line 1 column 3)
+          at loadJsonFile (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\src\utils\utils.ts:55:13)
+          at Object.parseRoutesFile (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\src\utils\utils.ts:295:14)
+          at Object.<anonymous> (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\test\utils-comprehensive.test.ts:435:34)
+          at Promise.finally.completed (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at _runTestsForDescribeBlock (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-circus\build\runner.js:95:33)
+          at runTestInternal (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:275:16)
+          at runTest (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:343:7)
+          at Object.worker (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\jest-runner\build\testWorker.js:497:12)
+
+      307 |     }
+      308 |   } catch (error) {
+    > 309 |     console.error(`Error parsing routes file: ${routesPath}`, error);
+          |             ^
+      310 |     return {};
+      311 |   }
+      312 | }
+
+      at Object.parseRoutesFile (src/utils/utils.ts:309:13)
+      at Object.<anonymous> (test/utils-comprehensive.test.ts:435:34)
+
+(node:36000) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/middleware-branches.test.ts
+(node:28776) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/index.test.ts
+  ΓùÅ Console
+
+    console.warn
+      ΓÜá∩╕Å  Static path not found: /public
+
+      139 |     statics.forEach((staticPath) => {
+      140 |       if (!fs.existsSync(path.resolve(staticPath))) {
+    > 141 |         console.warn(
+          |                 ^
+      142 |           styles.icons.warning,
+      143 |           styles.warning(`Static path not found: ${styles.highlight(staticPath)}`)
+      144 |         );
+
+      at src/lib/server.ts:141:17
+          at Array.forEach (<anonymous>)
+      at JsonServer.setupStaticFiles (src/lib/server.ts:139:13)
+      at JsonServer.setupMiddlewares (src/lib/server.ts:116:10)
+      at new JsonServer (src/lib/server.ts:51:10)
+      at createServer (src/lib/index.ts:21:10)
+      at create (src/index.ts:76:22)
+      at Object.<anonymous> (test/index.test.ts:33:28)
+
+(node:43432) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/server.test.ts
+(node:39768) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/simple-api-prefix.test.ts
+(node:5604) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/pagination.test.ts
+(node:15648) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/rest-api.test.ts
+  ΓùÅ Console
+
+    console.error
+      Γ¥î Server error: SyntaxError: Expected property name or '}' in JSON at position 2 (line 1 column 3)
+          at JSON.parse (<anonymous>)
+          at parse (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\body-parser\lib\types\json.js:72:19)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\body-parser\lib\read.js:162:18
+          at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+          at invokeCallback (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:238:16)
+          at done (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:227:7)
+          at IncomingMessage.onEnd (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:287:7)
+          at IncomingMessage.emit (node:events:508:28)
+          at endReadableNT (node:internal/streams/readable:1701:12)
+          at processTicksAndRejections (node:internal/process/task_queues:89:21) {
+        expose: true,
+        statusCode: 400,
+        status: 400,
+        body: '{ invalid json }',
+        type: 'entity.parse.failed'
+      }
+
+      811 |     // Handle server errors (500)
+      812 |     this.app.use(((err: Error, req: Request, res: Response, _next: NextFunction) => {
+    > 813 |       console.error(styles.icons.error, styles.error('Server error:'), err);
+          |               ^
+      814 |       res.status(500).json({
+      815 |         error: 'Internal server error',
+      816 |         message: err.message || 'An unexpected error occurred',
+
+      at src/lib/server.ts:813:15
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/body-parser/lib/read.js:164:7
+      at invokeCallback (node_modules/raw-body/index.js:238:16)
+      at done (node_modules/raw-body/index.js:227:7)
+      at IncomingMessage.onEnd (node_modules/raw-body/index.js:287:7)
+
+    console.error
+      Γ¥î Server error: SyntaxError: Expected property name or '}' in JSON at position 2 (line 1 column 3)
+          at JSON.parse (<anonymous>)
+          at parse (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\body-parser\lib\types\json.js:72:19)
+          at C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\body-parser\lib\read.js:162:18
+          at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+          at invokeCallback (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:238:16)
+          at done (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:227:7)
+          at IncomingMessage.onEnd (C:\Users\DEVDUL\Documents\DEVELOPMENT\json-server\node_modules\raw-body\index.js:287:7)
+          at IncomingMessage.emit (node:events:508:28)
+          at endReadableNT (node:internal/streams/readable:1701:12)
+          at processTicksAndRejections (node:internal/process/task_queues:89:21) {
+        expose: true,
+        statusCode: 400,
+        status: 400,
+        body: '{ invalid json }',
+        type: 'entity.parse.failed'
+      }
+
+      811 |     // Handle server errors (500)
+      812 |     this.app.use(((err: Error, req: Request, res: Response, _next: NextFunction) => {
+    > 813 |       console.error(styles.icons.error, styles.error('Server error:'), err);
+          |               ^
+      814 |       res.status(500).json({
+      815 |         error: 'Internal server error',
+      816 |         message: err.message || 'An unexpected error occurred',
+
+      at src/lib/server.ts:813:15
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/body-parser/lib/read.js:164:7
+      at invokeCallback (node_modules/raw-body/index.js:238:16)
+      at done (node_modules/raw-body/index.js:227:7)
+      at IncomingMessage.onEnd (node_modules/raw-body/index.js:287:7)
+
+(node:8204) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/readonly-mode.test.ts
+(node:3184) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL test/server-comprehensive.test.ts
+  ΓùÅ Console
+
+    console.log
+      ≡ƒ¢æ JSON Server has been stopped
+
+      at Server.<anonymous> (src/lib/server.ts:846:21)
+
+    console.log
+      ≡ƒ¢æ JSON Server has been stopped
+
+      at Server.<anonymous> (src/lib/server.ts:846:21)
+
+  ΓùÅ Server Comprehensive Coverage ΓÇ║ Server error event in start() ΓÇ║ should reject when server emits error event (port in use)
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"_connections": 0, "_events": {"close": [Function anonymous], "connection": [Function connectionListener], "error": [Function anonymous], "listening": [[Function setupConnectionsTracking], [Function bound onceWrapper]], "request": [Function app]}, "_eventsCount": 5, "_handle": null, "_listeningId": 2, "_maxListeners": undefined, "_unref": false, "_usingWorkers": false, "_workers": [], "allowHalfOpen": true, "connectionsCheckingInterval": 30000, "headersTimeout": 60000, "highWaterMark": 16384, "httpAllowHalfOpen": false, "insecureHTTPParser": undefined, "joinDuplicateHeaders": undefined, "keepAlive": false, "keepAliveInitialDelay": 0, "keepAliveTimeout": 5000, "keepAliveTimeoutBuffer": 1000, "maxHeaderSize": undefined, "maxHeadersCount": null, "maxRequestsPerSocket": 0, "noDelay": true, "pauseOnConnect": false, "rejectNonStandardBodyWrites": false, "requestTimeout": 300000, "requireHostHeader": true, "shouldUpgradeCallback": [Function anonymous], "timeout": 0, Symbol(IncomingMessage): [Function IncomingMessage], Symbol(ServerResponse): [Function ServerResponse], Symbol(OptimizeEmptyRequestsOption): false, Symbol(shapeMode): false, Symbol(kCapture): false, Symbol(async_id_symbol): 300, Symbol(kUniqueHeaders): null}
+
+      420 |       server2.loadDatabase(dbPath);
+      421 |
+    > 422 |       await expect(server2.start()).rejects.toThrow();
+          |             ^
+      423 |       consoleSpy.mockRestore();
+      424 |
+      425 |       await new Promise<void>((resolve) => httpServer1.close(() => resolve()));
+
+      at expect (node_modules/expect/build/index.js:2116:15)
+      at Object.<anonymous> (test/server-comprehensive.test.ts:422:13)
+
+A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+Test Suites: 1 failed, 13 passed, 14 total
+Tests:       1 failed, 286 passed, 287 total
+Snapshots:   0 total
+Time:        6.552 s
+Ran all test suites.

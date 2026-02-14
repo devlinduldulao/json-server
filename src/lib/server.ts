@@ -437,11 +437,11 @@ export class JsonServer {
     method: HttpMethod | string,
     handler: (req: Request, res: Response) => void
   ): JsonServer {
-    if (!this.routes[routePath]) {
+    if (!this.routes[routePath] || typeof this.routes[routePath] === 'string') {
       this.routes[routePath] = {};
     }
 
-    this.routes[routePath][method.toLowerCase()] = handler;
+    (this.routes[routePath] as { [method: string]: string | ((req: any, res: any, next?: any) => void) })[method.toLowerCase()] = handler;
 
     if (!this.options.quiet) {
       console.log(formatRouteRegistration(method, routePath));
@@ -715,6 +715,30 @@ export class JsonServer {
    */
   private applyCustomRoutes(): void {
     Object.entries(this.routes).forEach(([routePath, handlers]) => {
+      // Support flat route mapping: { "/api/posts/:id": "/posts/:id" }
+      // Treat string values as GET redirects
+      if (typeof handlers === 'string') {
+        const targetPath = handlers;
+        this.app.get(routePath, ((req: Request, res: Response) => {
+          let resolvedPath = targetPath;
+          const pathParamsMatch = routePath.match(/:[a-zA-Z0-9_]+/g);
+          if (pathParamsMatch) {
+            pathParamsMatch.forEach((paramName) => {
+              const paramKey = paramName.substring(1);
+              if (req.params[paramKey]) {
+                resolvedPath = resolvedPath.replace(paramName, req.params[paramKey]);
+              }
+            });
+          }
+          res.redirect(resolvedPath);
+        }) as RequestHandler);
+
+        if (!this.options.quiet) {
+          console.log(formatRouteRegistration('GET', routePath, targetPath));
+        }
+        return;
+      }
+
       Object.entries(handlers).forEach(([method, handler]) => {
         const routeMethod = method.toLowerCase() as 'get' | 'post' | 'put' | 'patch' | 'delete';
 

@@ -25,3 +25,5 @@ examples/
 .idea/
 .vscode/
 test-*.json
+test-results.txt
+eslint.config.js

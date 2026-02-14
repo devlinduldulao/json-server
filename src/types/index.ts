@@ -139,7 +139,7 @@ export interface CustomRoute {
  * @interface RoutesConfig
  */
 export interface RoutesConfig {
-  [path: string]: {
+  [path: string]: string | {
     [method: string]: string | RouteHandler;
   };
 }
