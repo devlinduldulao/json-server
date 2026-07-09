@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.7] - 2026-07-09
+
+### Added
+
+- Enabled response compression by default and made `--no-gzip` functional
+- Added regression coverage for compression, duplicate IDs, malformed payloads, and persistence rollback
+
+### Fixed
+
+- Return `400 Bad Request` for malformed JSON instead of incorrectly reporting a server error
+- Reject array request bodies and duplicate resource IDs with clear client errors
+- Restore in-memory state when saving a create, update, or delete operation fails
+- Isolate API-prefix tests so the committed database fixture is never modified
+- Updated the lint toolchain for ESLint 10 compatibility and resolved production dependency audit findings
+
+### Changed
+
+- Reduced Jest transforms to only the ESM dependencies that require them, avoiding noisy dependency-transform warnings
+- Corrected package-lock metadata to match the published package version
+
 ## [1.3.6] - 2026-02-14
 
 ### Fixed

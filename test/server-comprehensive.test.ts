@@ -415,8 +415,50 @@ describe('Server Comprehensive Coverage', () => {
     });
   });
 
-  describe('500 error handler for server errors', () => {
-    it('should return 500 JSON when body-parser receives invalid JSON', async () => {
+  describe('response compression', () => {
+    it('should gzip sufficiently large responses by default', async () => {
+      const dbPath = createTestDb({
+        posts: Array.from({ length: 100 }, (_, index) => ({
+          id: String(index),
+          title: 'A response large enough to compress',
+        })),
+      });
+      const server = makeServer();
+      server.loadDatabase(dbPath);
+      const httpServer = await server.start();
+
+      const response = await request(server.getApp())
+        .get('/posts')
+        .set('Accept-Encoding', 'gzip')
+        .expect(200);
+      expect(response.headers['content-encoding']).toBe('gzip');
+
+      await new Promise<void>((resolve) => httpServer.close(() => resolve()));
+    });
+
+    it('should skip compression when noGzip is enabled', async () => {
+      const dbPath = createTestDb({
+        posts: Array.from({ length: 100 }, (_, index) => ({
+          id: String(index),
+          title: 'A response large enough to compress',
+        })),
+      });
+      const server = makeServer({ noGzip: true });
+      server.loadDatabase(dbPath);
+      const httpServer = await server.start();
+
+      const response = await request(server.getApp())
+        .get('/posts')
+        .set('Accept-Encoding', 'gzip')
+        .expect(200);
+      expect(response.headers['content-encoding']).toBeUndefined();
+
+      await new Promise<void>((resolve) => httpServer.close(() => resolve()));
+    });
+  });
+
+  describe('error handler', () => {
+    it('should return a 400 JSON error when body-parser receives invalid JSON', async () => {
       const dbPath = createTestDb({ posts: [] });
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const server = makeServer();
@@ -430,8 +472,8 @@ describe('Server Comprehensive Coverage', () => {
         .post('/posts')
         .set('Content-Type', 'application/json')
         .send('{ invalid json }')
-        .expect(500);
-      expect(res.body.error).toBe('Internal server error');
+        .expect(400);
+      expect(res.body.error).toBe('Invalid request');
       consoleSpy.mockRestore();
 
       await new Promise<void>((resolve) => httpServer.close(() => resolve()));
@@ -577,6 +619,9 @@ describe('Server Comprehensive Coverage', () => {
         .send({ title: 'Test' })
         .expect(500);
       expect(res.body.error).toContain('Failed to save');
+
+      const collection = await request(server.getApp()).get('/posts').expect(200);
+      expect(collection.body).toEqual([]);
     });
 
     it('should return 500 when PUT fails to save', async () => {

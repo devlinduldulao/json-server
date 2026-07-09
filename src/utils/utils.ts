@@ -44,7 +44,7 @@ export function loadJsonFile(filePath: string): Record<string, any> {
 
     try {
       const parsed = JSON.parse(data);
-      
+
       if (typeof parsed !== 'object' || parsed === null) {
         throw new Error('JSON content must be an object');
       }

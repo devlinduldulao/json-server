@@ -1,5 +1,6 @@
 import request from 'supertest';
 import path from 'path';
+import fs from 'fs';
 import { JsonServer } from '../src/lib/server';
 import { ServerOptions } from '../src/types';
 
@@ -26,13 +27,21 @@ describe('Simple API Prefix Test', () => {
     server = new JsonServer(options);
 
     // Load test database
-    const testDbPath = path.join(__dirname, '../test-db.json');
+    const testDbPath = path.join(__dirname, 'tmp-simple-api-prefix-db.json');
+    fs.copyFileSync(path.join(__dirname, '../test-db.json'), testDbPath);
     server.loadDatabase(testDbPath);
 
     // Set up routes
     (server as any).createResourceRoutes();
 
     app = server.getApp();
+  });
+
+  afterAll(() => {
+    const testDbPath = path.join(__dirname, 'tmp-simple-api-prefix-db.json');
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
+    }
   });
 
   test('should work with standard routes', async () => {

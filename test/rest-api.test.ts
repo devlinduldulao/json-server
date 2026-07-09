@@ -189,6 +189,15 @@ describe('REST API Integration Tests', () => {
       expect(response.body.id).toBe('custom-id-123');
     });
 
+    it('should reject duplicate IDs', async () => {
+      const response = await request(app)
+        .post('/posts')
+        .send({ id: '1', title: 'Duplicate post' })
+        .expect(409);
+
+      expect(response.body.error).toContain('already exists');
+    });
+
     it('should return 400 for invalid request body', async () => {
       const response = await request(app)
         .post('/posts')
@@ -197,6 +206,12 @@ describe('REST API Integration Tests', () => {
         .expect(400);
 
       expect(response.body).toHaveProperty('error');
+    });
+
+    it('should reject array request bodies', async () => {
+      const response = await request(app).post('/posts').send([{ title: 'Invalid' }]).expect(400);
+
+      expect(response.body.error).toBe('Invalid request body');
     });
 
     it('should create new collection if it does not exist', async () => {
@@ -383,7 +398,7 @@ describe('REST API Integration Tests', () => {
         .post('/posts')
         .send('{ invalid json }')
         .set('Content-Type', 'application/json')
-        .expect(500); // Body parser throws 500 for invalid JSON
+        .expect(400);
 
       expect(response.body).toHaveProperty('error');
     });
@@ -393,7 +408,7 @@ describe('REST API Integration Tests', () => {
         .put('/posts/1')
         .send('{ invalid json }')
         .set('Content-Type', 'application/json')
-        .expect(500); // Body parser throws 500 for invalid JSON
+        .expect(400);
 
       expect(response.body).toHaveProperty('error');
     });

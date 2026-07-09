@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction, RequestHandler } fro
 import path from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
+import compression from 'compression';
 import morgan from 'morgan';
 import serveStatic from 'serve-static';
 import { ServerOptions, Database, RoutesConfig, HttpMethod } from '../types';
@@ -11,7 +12,13 @@ import {
   readOnlyMiddleware,
   apiPrefixMiddleware,
 } from '../middleware';
-import { fileExists, loadJsonFile, saveJsonFile, parseRoutesFile } from '../utils/utils';
+import {
+  fileExists,
+  generateId,
+  loadJsonFile,
+  saveJsonFile,
+  parseRoutesFile,
+} from '../utils/utils';
 import {
   styles,
   createServerBanner,
@@ -78,6 +85,11 @@ export class JsonServer {
     if (this.options.bodyParser) {
       this.app.use(bodyParser.json({ limit: '10mb' }));
       this.app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
+    }
+
+    // Compress responses unless explicitly disabled from the CLI or API.
+    if (!this.options.noGzip) {
+      this.app.use(compression());
     }
 
     // API Prefix middleware - allows accessing routes with /api/* prefix
@@ -233,10 +245,10 @@ export class JsonServer {
 
     const total = collection.length;
     const totalPages = Math.ceil(total / perPage);
-    
+
     // Clamp page to valid range
     page = Math.min(page, Math.max(1, totalPages));
-    
+
     const start = (page - 1) * perPage;
     const end = Math.min(start + perPage, total);
 
@@ -297,7 +309,7 @@ export class JsonServer {
     }
 
     const collection = this.db[resourceName];
-    
+
     if (!Array.isArray(collection)) {
       throw new Error(`Resource '${resourceName}' is not a collection`);
     }
@@ -441,7 +453,11 @@ export class JsonServer {
       this.routes[routePath] = {};
     }
 
-    (this.routes[routePath] as { [method: string]: string | ((req: any, res: any, next?: any) => void) })[method.toLowerCase()] = handler;
+    (
+      this.routes[routePath] as {
+        [method: string]: string | ((req: any, res: any, next?: any) => void);
+      }
+    )[method.toLowerCase()] = handler;
 
     if (!this.options.quiet) {
       console.log(formatRouteRegistration(method, routePath));
@@ -475,6 +491,10 @@ export class JsonServer {
     this.app.get('/:resource', ((req: Request, res: Response) => {
       const { resource } = req.params;
       const resourceData = this.db[resource] || [];
+
+      if (!Array.isArray(resourceData)) {
+        return res.json(resourceData);
+      }
 
       // Filter data based on non-pagination query parameters first
       let filteredData = [...resourceData];
@@ -524,6 +544,13 @@ export class JsonServer {
         });
       }
 
+      if (!Array.isArray(this.db[resource])) {
+        return res.status(404).json({
+          error: `Resource '${resource}' is not a collection`,
+          message: `The resource '${resource}' does not support item lookups`,
+        });
+      }
+
       const item = this.db[resource].find((item: any) => String(item[this.idField]) === String(id));
 
       if (!item) {
@@ -541,7 +568,7 @@ export class JsonServer {
       const { resource } = req.params;
       const newItem = req.body;
 
-      if (!newItem || typeof newItem !== 'object') {
+      if (!newItem || typeof newItem !== 'object' || Array.isArray(newItem)) {
         return res.status(400).json({
           error: 'Invalid request body',
           message: 'Request body must be a valid JSON object',
@@ -550,11 +577,27 @@ export class JsonServer {
 
       if (!this.db[resource]) {
         this.db[resource] = [];
+      } else if (!Array.isArray(this.db[resource])) {
+        return res.status(409).json({
+          error: `Resource '${resource}' is not a collection`,
+          message: `The resource '${resource}' does not support item creation`,
+        });
       }
 
       // Generate ID if not provided
-      if (!newItem[this.idField]) {
-        newItem[this.idField] = Date.now().toString();
+      if (newItem[this.idField] === undefined || newItem[this.idField] === null) {
+        newItem[this.idField] = generateId();
+      }
+
+      if (
+        this.db[resource].some(
+          (item: any) => String(item[this.idField]) === String(newItem[this.idField])
+        )
+      ) {
+        return res.status(409).json({
+          error: `Item with ID '${newItem[this.idField]}' already exists`,
+          message: `Choose a unique '${this.idField}' value for resource '${resource}'`,
+        });
       }
 
       this.db[resource].push(newItem);
@@ -562,6 +605,7 @@ export class JsonServer {
       try {
         this.saveDatabase();
       } catch (error) {
+        this.db[resource].pop();
         const errorMessage = error instanceof Error ? error.message : String(error);
         return res.status(500).json({
           error: 'Failed to save database',
@@ -577,7 +621,7 @@ export class JsonServer {
       const { resource, id } = req.params;
       const updateData = req.body;
 
-      if (!updateData || typeof updateData !== 'object') {
+      if (!updateData || typeof updateData !== 'object' || Array.isArray(updateData)) {
         return res.status(400).json({
           error: 'Invalid request body',
           message: 'Request body must be a valid JSON object',
@@ -588,6 +632,13 @@ export class JsonServer {
         return res.status(404).json({
           error: `Resource '${resource}' not found`,
           message: `The resource '${resource}' does not exist in the database`,
+        });
+      }
+
+      if (!Array.isArray(this.db[resource])) {
+        return res.status(409).json({
+          error: `Resource '${resource}' is not a collection`,
+          message: `The resource '${resource}' does not support item updates`,
         });
       }
 
@@ -605,11 +656,13 @@ export class JsonServer {
       // Preserve the ID
       updateData[this.idField] = this.db[resource][index][this.idField];
 
+      const originalItem = this.db[resource][index];
       this.db[resource][index] = updateData;
 
       try {
         this.saveDatabase();
       } catch (error) {
+        this.db[resource][index] = originalItem;
         const errorMessage = error instanceof Error ? error.message : String(error);
         return res.status(500).json({
           error: 'Failed to save database',
@@ -625,7 +678,7 @@ export class JsonServer {
       const { resource, id } = req.params;
       const updateData = req.body;
 
-      if (!updateData || typeof updateData !== 'object') {
+      if (!updateData || typeof updateData !== 'object' || Array.isArray(updateData)) {
         return res.status(400).json({
           error: 'Invalid request body',
           message: 'Request body must be a valid JSON object',
@@ -636,6 +689,13 @@ export class JsonServer {
         return res.status(404).json({
           error: `Resource '${resource}' not found`,
           message: `The resource '${resource}' does not exist in the database`,
+        });
+      }
+
+      if (!Array.isArray(this.db[resource])) {
+        return res.status(409).json({
+          error: `Resource '${resource}' is not a collection`,
+          message: `The resource '${resource}' does not support item updates`,
         });
       }
 
@@ -651,6 +711,7 @@ export class JsonServer {
       }
 
       // Preserve the ID and merge with existing data
+      const originalItem = this.db[resource][index];
       const updatedItem = { ...this.db[resource][index], ...updateData };
       updatedItem[this.idField] = this.db[resource][index][this.idField];
 
@@ -659,6 +720,7 @@ export class JsonServer {
       try {
         this.saveDatabase();
       } catch (error) {
+        this.db[resource][index] = originalItem;
         const errorMessage = error instanceof Error ? error.message : String(error);
         return res.status(500).json({
           error: 'Failed to save database',
@@ -680,6 +742,13 @@ export class JsonServer {
         });
       }
 
+      if (!Array.isArray(this.db[resource])) {
+        return res.status(409).json({
+          error: `Resource '${resource}' is not a collection`,
+          message: `The resource '${resource}' does not support item deletion`,
+        });
+      }
+
       const index = this.db[resource].findIndex(
         (item: any) => String(item[this.idField]) === String(id)
       );
@@ -697,6 +766,7 @@ export class JsonServer {
       try {
         this.saveDatabase();
       } catch (error) {
+        this.db[resource].splice(index, 0, deletedItem);
         const errorMessage = error instanceof Error ? error.message : String(error);
         return res.status(500).json({
           error: 'Failed to save database',
@@ -808,12 +878,22 @@ export class JsonServer {
       });
     }) as RequestHandler);
 
-    // Handle server errors (500)
+    // Return client-safe errors while preserving status codes supplied by middleware.
     this.app.use(((err: Error, req: Request, res: Response, _next: NextFunction) => {
-      console.error(styles.icons.error, styles.error('Server error:'), err);
-      res.status(500).json({
-        error: 'Internal server error',
-        message: err.message || 'An unexpected error occurred',
+      const status =
+        (err as Error & { status?: number; statusCode?: number }).statusCode ??
+        (err as Error & { status?: number; statusCode?: number }).status;
+      const clientError = typeof status === 'number' && status >= 400 && status < 500;
+
+      if (!this.options.quiet) {
+        console.error(styles.icons.error, styles.error('Server error:'), err);
+      }
+
+      res.status(clientError ? status : 500).json({
+        error: clientError ? 'Invalid request' : 'Internal server error',
+        message: clientError
+          ? 'The request could not be processed'
+          : err.message || 'An unexpected error occurred',
       });
     }) as unknown as RequestHandler);
 

@@ -2,7 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts'],
+  setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
@@ -22,7 +22,11 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: [],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(nanoid|chalk|ansi-styles|supports-color)/)',
+    '<rootDir>/test/tmp-utils-test/',
+    '<rootDir>/test/setup.js',
+  ],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
